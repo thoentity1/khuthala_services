@@ -8,51 +8,34 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f4e9e7;
-            color: #333;
         }
 
         header {
             background-color: #cfa5a0;
             text-align: center;
-            padding: 40px 20px;
+            padding: 40px;
         }
 
         header img {
-            max-width: 180px;
-        }
-
-        header h1 {
-            margin: 10px 0 5px;
-            font-size: 2.5em;
-            letter-spacing: 2px;
-        }
-
-        header p {
-            margin: 0;
-            font-size: 1.2em;
+            max-width: 150px;
         }
 
         nav {
-            background-color: #000;
-            padding: 10px;
+            background: black;
             text-align: center;
+            padding: 10px;
         }
 
         nav a {
-            color: #fff;
+            color: white;
             margin: 0 15px;
             text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
         }
 
         section {
-            padding: 60px 20px;
+            padding: 40px;
             text-align: center;
         }
 
@@ -64,47 +47,24 @@
         }
 
         .service-card {
-            background: #fff;
+            background: white;
             padding: 20px;
-            width: 260px;
+            width: 280px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .service-card h3 {
-            margin-top: 0;
-            color: #cfa5a0;
         }
 
         .btn {
-            display: inline-block;
+            background: #cfa5a0;
+            color: white;
             padding: 10px 20px;
-            background-color: #cfa5a0;
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 10px;
             border: none;
+            margin-top: 10px;
             cursor: pointer;
         }
 
-        .btn:hover {
-            background-color: #b88e8a;
-        }
-
-        footer {
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* POPUP */
         .popup {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.6);
@@ -113,25 +73,16 @@
         }
 
         .popup-content {
-            background: #fff;
-            padding: 30px;
+            background: white;
+            padding: 20px;
             border-radius: 10px;
-            text-align: center;
-            width: 300px;
+            width: 320px;
         }
 
-        .popup-content input {
-            width: 90%;
+        input, select {
+            width: 95%;
             padding: 10px;
-            margin: 10px 0;
-        }
-
-        .close-btn {
-            margin-top: 10px;
-            background: #ccc;
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
+            margin: 8px 0;
         }
     </style>
 </head>
@@ -139,82 +90,98 @@
 <body>
 
 <header>
-    <img src="khuthala_logo.png" alt="Khuthala Logo">
+    <img src="khuthala_logo.png">
     <h1>KHUTHALA</h1>
     <p>Management Services</p>
 </header>
 
 <nav>
-    <a href="#about">About</a>
     <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
 </nav>
-
-<section id="about">
-    <h2>About Us</h2>
-    <p>
-        At Khuthala Management Services, we provide reliable cleaning, cooking,
-        and product solutions to make your life easier. Clean spaces, better living.
-    </p>
-</section>
 
 <section id="services">
     <h2>Our Services</h2>
 
     <div class="services">
 
+        <!-- CLEANING -->
         <div class="service-card">
             <h3>Cleaning Services</h3>
-            <p>Professional home and office cleaning tailored to your needs.</p>
+
+            <p><strong>Once-off:</strong><br>
+            R350 (1–2 bedroom)<br>
+            R550 (3–4 bedroom)</p>
+
+            <p><strong>Twice a week:</strong><br>
+            R750 (1–2 bedroom)<br>
+            R950 (3–4 bedroom)</p>
+
+            <p><strong>4 times a month:</strong><br>
+            R1500 (1–2 bedroom)<br>
+            R1700 (3–4 bedroom)</p>
+
             <button class="btn" onclick="openForm('Cleaning Services')">Book Now</button>
         </div>
 
+        <!-- COOKING -->
         <div class="service-card">
             <h3>Cooking Services</h3>
-            <p>Delicious, home-style meals prepared with care and quality ingredients.</p>
+            <p>Home-style meals prepared with care.</p>
             <button class="btn" onclick="openForm('Cooking Services')">Book Now</button>
         </div>
 
+        <!-- PRODUCTS -->
         <div class="service-card">
-            <h3>Cleaning Products Retail</h3>
-            <p>High-quality cleaning products for maintaining a fresh environment.</p>
-            <button class="btn" onclick="openForm('Cleaning Products Retail')">Book Now</button>
+            <h3>Cleaning Products</h3>
+            <p>Quality cleaning supplies for your home.</p>
+            <button class="btn" onclick="openForm('Cleaning Products')">Book Now</button>
         </div>
 
     </div>
 </section>
 
-<section id="contact">
-    <h2>Contact Us</h2>
-    <p>Email: info@khuthala.com</p>
-    <p>Phone: +123 456 7890</p>
-</section>
-
-<!-- POPUP FORM -->
-<div id="popupForm" class="popup">
+<!-- POPUP -->
+<div class="popup" id="popupForm">
     <div class="popup-content">
-        <h3>Enter Your Details</h3>
+        <h3>Enter Details</h3>
 
         <input type="text" id="name" placeholder="Your Name">
-        <input type="text" id="phone" placeholder="Your Phone Number">
+        
+        <input type="text" id="phone" placeholder="Phone Number">
+
+        <!-- CLEANING OPTIONS -->
+        <select id="cleaningOption" style="display:none;">
+            <option value="">Select Cleaning Option</option>
+
+            <option>Once-off: R350 (1–2 bedroom)</option>
+            <option>Once-off: R550 (3–4 bedroom)</option>
+
+            <option>Twice a week: R750 (1–2 bedroom)</option>
+            <option>Twice a week: R950 (3–4 bedroom)</option>
+
+            <option>4 times a month: R1500 (1–2 bedroom)</option>
+            <option>4 times a month: R1700 (3–4 bedroom)</option>
+        </select>
 
         <button class="btn" onclick="sendToWhatsApp()">Send to WhatsApp</button>
-        <br>
-        <button class="close-btn" onclick="closeForm()">Cancel</button>
+        <button onclick="closeForm()">Cancel</button>
     </div>
 </div>
-
-<footer>
-    <p>© 2026 Khuthala Management Services</p>
-    <p>Clean Spaces, Better Living</p>
-</footer>
 
 <script>
     let selectedService = "";
 
     function openForm(service) {
         selectedService = service;
+
         document.getElementById("popupForm").style.display = "flex";
+
+        // Show dropdown only for cleaning
+        if (service === "Cleaning Services") {
+            document.getElementById("cleaningOption").style.display = "block";
+        } else {
+            document.getElementById("cleaningOption").style.display = "none";
+        }
     }
 
     function closeForm() {
@@ -222,23 +189,31 @@
     }
 
     function sendToWhatsApp() {
-        let name = document.getElementById("name").value.trim();
-        let phone = document.getElementById("phone").value.trim();
+        let name = document.getElementById("name").value;
+        let phone = document.getElementById("phone").value;
+        let option = document.getElementById("cleaningOption").value;
 
-        if (name === "" || phone === "") {
-            alert("Please fill in all fields");
+        if (!name || !phone) {
+            alert("Fill all fields");
             return;
         }
 
-        let message = `Hello, my name is ${name}. I am interested in ${selectedService}. My contact number is ${phone}.`;
+        let message = `Hello, my name is ${name}. I am interested in ${selectedService}.`;
 
-        // 🔴 REPLACE WITH YOUR REAL NUMBER (no + or spaces)
-        let whatsappNumber = "1234567890";
+        if (selectedService === "Cleaning Services") {
+            if (!option) {
+                alert("Please select a cleaning option");
+                return;
+            }
+            message += ` Option: ${option}.`;
+        }
+
+        message += ` My number is ${phone}.`;
+
+        let whatsappNumber = "27832142201"; // 🔴 PUT YOUR NUMBER HERE
 
         let url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, "_blank");
-
-        closeForm();
     }
 </script>
 

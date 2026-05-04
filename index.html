@@ -60,6 +60,7 @@ section {
     border: none;
     margin-top: 10px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 /* POPUP */
@@ -71,6 +72,7 @@ section {
     background: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
+    z-index: 999;
 }
 
 .popup-content {
@@ -91,7 +93,7 @@ input, select {
 <body>
 
 <header>
-    <img src="images/khuthala_logo.png">
+    <img src="images/khuthala_logo.png" alt="Logo">
     <h1>KHUTHALA</h1>
     <p>Management Services</p>
 </header>
@@ -105,7 +107,6 @@ input, select {
 
 <div class="services">
 
-<!-- CLEANING -->
 <div class="service-card">
 <h3>Cleaning Services</h3>
 
@@ -124,14 +125,12 @@ R1700 (3–4 bedroom)</p>
 <button class="btn" onclick="openForm('Cleaning Services')">Book Now</button>
 </div>
 
-<!-- COOKING -->
 <div class="service-card">
 <h3>Cooking Services</h3>
 <p>Home-style meals prepared with care.</p>
 <button class="btn" onclick="openForm('Cooking Services')">Book Now</button>
 </div>
 
-<!-- PRODUCTS -->
 <div class="service-card">
 <h3>Cleaning Products</h3>
 <p>Quality cleaning supplies for your home.</p>
@@ -167,16 +166,12 @@ R1700 (3–4 bedroom)</p>
 <option>15:00</option>
 </select>
 
-<!-- CLEANING OPTIONS -->
 <select id="cleaningOption" style="display:none;">
 <option value="">Select Cleaning Option</option>
-
 <option>Once-off: R350 (1–2 bedroom)</option>
 <option>Once-off: R550 (3–4 bedroom)</option>
-
 <option>Twice a week: R750 (1–2 bedroom)</option>
 <option>Twice a week: R950 (3–4 bedroom)</option>
-
 <option>4 times a month: R1500 (1–2 bedroom)</option>
 <option>4 times a month: R1700 (3–4 bedroom)</option>
 </select>
@@ -192,19 +187,24 @@ let selectedService = "";
 
 function openForm(service) {
     selectedService = service;
-    document.getElementById("popupForm").style.display = "flex";
+
+    const popup = document.getElementById("popupForm");
+    const cleaningSelect = document.getElementById("cleaningOption");
+
+    popup.style.display = "flex";
+
+    cleaningSelect.value = "";
 
     if (service === "Cleaning Services") {
-        document.getElementById("cleaningOption").style.display = "block";
+        cleaningSelect.style.display = "block";
     } else {
-        document.getElementById("cleaningOption").style.display = "none";
+        cleaningSelect.style.display = "none";
     }
 }
 
 function closeForm() {
     document.getElementById("popupForm").style.display = "none";
 
-    // Reset form
     document.getElementById("name").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("location").value = "";
@@ -213,13 +213,15 @@ function closeForm() {
     document.getElementById("cleaningOption").value = "";
 }
 
-// Close when clicking outside
-window.onclick = function(e) {
-    let popup = document.getElementById("popupForm");
-    if (e.target === popup) {
-        closeForm();
-    }
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const popup = document.getElementById("popupForm");
+
+    popup.addEventListener("click", function (e) {
+        if (e.target === popup) {
+            closeForm();
+        }
+    });
+});
 
 function sendToWhatsApp() {
     let name = document.getElementById("name").value.trim();
@@ -239,26 +241,29 @@ function sendToWhatsApp() {
         return;
     }
 
-    let message = `*NEW BOOKING*%0A`;
-    message += `Name: ${name}%0A`;
-    message += `Phone: ${phone}%0A`;
-    message += `Location: ${location}%0A`;
-    message += `Service: ${selectedService}%0A`;
-    message += `Date: ${date}%0A`;
-    message += `Time: ${time}%0A`;
+    let message =
+`*NEW BOOKING*
+Name: ${name}
+Phone: ${phone}
+Location: ${location}
+Service: ${selectedService}
+Date: ${date}
+Time: ${time}
+`;
 
     if (selectedService === "Cleaning Services") {
         if (!option) {
             alert("Select a cleaning option");
             return;
         }
-        message += `Package: ${option}%0A`;
+        message += `Package: ${option}\n`;
     }
 
     let whatsappNumber = "27832142201";
 
-    let url = `https://wa.me/${whatsappNumber}?text=${message}`;
-    window.open(url, "_blank");
+    let url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+
+    window.open(url, "_blank", "noopener,noreferrer");
 
     closeForm();
 }

@@ -63,16 +63,15 @@ section {
     border-radius: 5px;
 }
 
-/* POPUP */
+/* POPUP FIXED */
 .popup {
     display: none;
     position: fixed;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 9999;
 }
 
 .popup-content {
@@ -80,6 +79,7 @@ section {
     padding: 20px;
     border-radius: 10px;
     width: 320px;
+    z-index: 10000;
 }
 
 input, select {
@@ -140,7 +140,7 @@ R1700 (3–4 bedroom)</p>
 </div>
 </section>
 
-<!-- POPUP FORM -->
+<!-- POPUP -->
 <div class="popup" id="popupForm">
 <div class="popup-content">
 
@@ -150,10 +150,8 @@ R1700 (3–4 bedroom)</p>
 <input type="text" id="phone" placeholder="Phone Number">
 <input type="text" id="location" placeholder="Your Location">
 
-<label>Select Date:</label>
 <input type="date" id="date">
 
-<label>Select Time:</label>
 <select id="time">
 <option value="">Select Time</option>
 <option>08:00</option>
@@ -168,12 +166,12 @@ R1700 (3–4 bedroom)</p>
 
 <select id="cleaningOption" style="display:none;">
 <option value="">Select Cleaning Option</option>
-<option>Once-off: R350 (1–2 bedroom)</option>
-<option>Once-off: R550 (3–4 bedroom)</option>
-<option>Twice a week: R750 (1–2 bedroom)</option>
-<option>Twice a week: R950 (3–4 bedroom)</option>
-<option>4 times a month: R1500 (1–2 bedroom)</option>
-<option>4 times a month: R1700 (3–4 bedroom)</option>
+<option>Once-off: R350</option>
+<option>Once-off: R550</option>
+<option>Twice a week: R750</option>
+<option>Twice a week: R950</option>
+<option>4 times a month: R1500</option>
+<option>4 times a month: R1700</option>
 </select>
 
 <button class="btn" onclick="sendToWhatsApp()">Send to WhatsApp</button>
@@ -185,6 +183,15 @@ R1700 (3–4 bedroom)</p>
 <script>
 let selectedService = "";
 
+/* IMPORTANT: wait for DOM */
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.getElementById("popupForm").addEventListener("click", function (e) {
+        if (e.target === this) closeForm();
+    });
+
+});
+
 function openForm(service) {
     selectedService = service;
 
@@ -194,12 +201,7 @@ function openForm(service) {
     popup.style.display = "flex";
 
     cleaningSelect.value = "";
-
-    if (service === "Cleaning Services") {
-        cleaningSelect.style.display = "block";
-    } else {
-        cleaningSelect.style.display = "none";
-    }
+    cleaningSelect.style.display = (service === "Cleaning Services") ? "block" : "none";
 }
 
 function closeForm() {
@@ -213,16 +215,6 @@ function closeForm() {
     document.getElementById("cleaningOption").value = "";
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const popup = document.getElementById("popupForm");
-
-    popup.addEventListener("click", function (e) {
-        if (e.target === popup) {
-            closeForm();
-        }
-    });
-});
-
 function sendToWhatsApp() {
     let name = document.getElementById("name").value.trim();
     let phone = document.getElementById("phone").value.trim();
@@ -232,17 +224,17 @@ function sendToWhatsApp() {
     let option = document.getElementById("cleaningOption").value;
 
     if (!name || !phone || !location || !date || !time) {
-        alert("Please fill in all fields");
+        alert("Please fill all fields");
         return;
     }
 
     if (!/^[0-9]{10,15}$/.test(phone)) {
-        alert("Enter a valid phone number");
+        alert("Invalid phone number");
         return;
     }
 
     let message =
-`*NEW BOOKING*
+`NEW BOOKING
 Name: ${name}
 Phone: ${phone}
 Location: ${location}
@@ -253,15 +245,13 @@ Time: ${time}
 
     if (selectedService === "Cleaning Services") {
         if (!option) {
-            alert("Select a cleaning option");
+            alert("Select cleaning option");
             return;
         }
         message += `Package: ${option}\n`;
     }
 
-    let whatsappNumber = "27832142201";
-
-    let url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+    let url = "https://wa.me/27832142201?text=" + encodeURIComponent(message);
 
     window.open(url, "_blank", "noopener,noreferrer");
 

@@ -66,7 +66,7 @@
         .service-card {
             background: #fff;
             padding: 20px;
-            width: 250px;
+            width: 260px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
@@ -74,13 +74,6 @@
         .service-card h3 {
             margin-top: 0;
             color: #cfa5a0;
-        }
-
-        footer {
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
         }
 
         .btn {
@@ -91,17 +84,62 @@
             border-radius: 5px;
             text-decoration: none;
             margin-top: 10px;
+            border: none;
+            cursor: pointer;
         }
 
         .btn:hover {
             background-color: #b88e8a;
         }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* POPUP */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .popup-content input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .close-btn {
+            margin-top: 10px;
+            background: #ccc;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
     </style>
 </head>
+
 <body>
 
 <header>
-    <img src="images/khuthala_logo.png" alt="Khuthala Logo">
+    <img src="khuthala_logo.png" alt="Khuthala Logo">
     <h1>KHUTHALA</h1>
     <p>Management Services</p>
 </header>
@@ -115,29 +153,34 @@
 <section id="about">
     <h2>About Us</h2>
     <p>
-        At Khuthala Management Services, we provide professional and reliable solutions
-        to make your everyday life easier. From spotless cleaning to quality cooking
-        and trusted product retail, we are committed to delivering excellence.
+        At Khuthala Management Services, we provide reliable cleaning, cooking,
+        and product solutions to make your life easier. Clean spaces, better living.
     </p>
 </section>
 
 <section id="services">
     <h2>Our Services</h2>
+
     <div class="services">
+
         <div class="service-card">
             <h3>Cleaning Services</h3>
             <p>Professional home and office cleaning tailored to your needs.</p>
+            <button class="btn" onclick="openForm('Cleaning Services')">Book Now</button>
         </div>
 
         <div class="service-card">
             <h3>Cooking Services</h3>
             <p>Delicious, home-style meals prepared with care and quality ingredients.</p>
+            <button class="btn" onclick="openForm('Cooking Services')">Book Now</button>
         </div>
 
         <div class="service-card">
             <h3>Cleaning Products Retail</h3>
             <p>High-quality cleaning products for maintaining a fresh environment.</p>
+            <button class="btn" onclick="openForm('Cleaning Products Retail')">Book Now</button>
         </div>
+
     </div>
 </section>
 
@@ -145,13 +188,59 @@
     <h2>Contact Us</h2>
     <p>Email: info@khuthala.com</p>
     <p>Phone: +123 456 7890</p>
-    <a href="mailto:info@khuthala.com" class="btn">Get in Touch</a>
 </section>
+
+<!-- POPUP FORM -->
+<div id="popupForm" class="popup">
+    <div class="popup-content">
+        <h3>Enter Your Details</h3>
+
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="text" id="phone" placeholder="Your Phone Number">
+
+        <button class="btn" onclick="sendToWhatsApp()">Send to WhatsApp</button>
+        <br>
+        <button class="close-btn" onclick="closeForm()">Cancel</button>
+    </div>
+</div>
 
 <footer>
     <p>© 2026 Khuthala Management Services</p>
     <p>Clean Spaces, Better Living</p>
 </footer>
+
+<script>
+    let selectedService = "";
+
+    function openForm(service) {
+        selectedService = service;
+        document.getElementById("popupForm").style.display = "flex";
+    }
+
+    function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+    }
+
+    function sendToWhatsApp() {
+        let name = document.getElementById("name").value.trim();
+        let phone = document.getElementById("phone").value.trim();
+
+        if (name === "" || phone === "") {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        let message = `Hello, my name is ${name}. I am interested in ${selectedService}. My contact number is ${phone}.`;
+
+        // 🔴 REPLACE WITH YOUR REAL NUMBER (no + or spaces)
+        let whatsappNumber = "1234567890";
+
+        let url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank");
+
+        closeForm();
+    }
+</script>
 
 </body>
 </html>
